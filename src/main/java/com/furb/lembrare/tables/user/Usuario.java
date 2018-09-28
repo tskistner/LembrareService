@@ -10,31 +10,45 @@ public class Usuario {
 
 	@Id
 	@GeneratedValue
-	private int idUsuario;
-	private String nmUsuario, dsEmail, dsSenha;
-	private Date dtNascimento, dtCriacao, dtAtualizacao;
+	private Long idUsuario;
+	private Date dtAtualizacao;
+	private String dsEmail;
+	private String dsSenha;
+	private String nmPessoa;
+	private String dsCpf;
+	private Date dtNascimento;
+	private String ieSexo;
+	private String dsCidadeNatal;
+	private String dsCidadeAtual;
+	private String dsEndereco;
+	private int nrTelefone;
 
-	public Usuario(String nmUsuario, String dsEmail, String dsSenha, Date dtNascimento, Date dtCriacao,
-			Date dtAtualizacao) {
+	public Usuario(String dsEmail, String nmPessoa, String dsCpf, Date dtNascimento,
+			String ieSexo, String dsCidadeNatal, String dsCidadeAtual,
+			String dsEndereco, int nrTelefone) {
 		super();
-		this.nmUsuario = nmUsuario;
+		this.dtAtualizacao = new Date(System.currentTimeMillis());
 		this.dsEmail = dsEmail;
-		this.dsSenha = dsSenha;
+		this.nmPessoa = nmPessoa;
+		this.dsCpf = dsCpf;
 		this.dtNascimento = dtNascimento;
-		this.dtCriacao = dtCriacao;
-		this.dtAtualizacao = dtAtualizacao;
+		this.ieSexo = ieSexo;
+		this.dsCidadeNatal = dsCidadeNatal;
+		this.dsCidadeAtual = dsCidadeAtual;
+		this.dsEndereco = dsEndereco;
+		this.nrTelefone = nrTelefone;
 	}
 	
 	public Usuario() {
 		super();
 	}
 
-	public String getNmUsuario() {
-		return nmUsuario;
+	public Date getDtAtualizacao() {
+		return dtAtualizacao;
 	}
 
-	public void setNmUsuario(String nmUsuario) {
-		this.nmUsuario = nmUsuario;
+	public void setDtAtualizacao(Date dtAtualizacao) {
+		this.dtAtualizacao = dtAtualizacao;
 	}
 
 	public String getDsEmail() {
@@ -53,6 +67,22 @@ public class Usuario {
 		this.dsSenha = dsSenha;
 	}
 
+	public String getNmPessoa() {
+		return nmPessoa;
+	}
+
+	public void setNmPessoa(String nmPessoa) {
+		this.nmPessoa = nmPessoa;
+	}
+
+	public String getDsCpf() {
+		return dsCpf;
+	}
+
+	public void setDsCpf(String dsCpf) {
+		this.dsCpf = dsCpf;
+	}
+
 	public Date getDtNascimento() {
 		return dtNascimento;
 	}
@@ -61,24 +91,50 @@ public class Usuario {
 		this.dtNascimento = dtNascimento;
 	}
 
-	public Date getDtCriacao() {
-		return dtCriacao;
+	public String getIeSexo() {
+		return ieSexo;
 	}
 
-	public void setDtCriacao(Date dtCriacao) {
-		this.dtCriacao = dtCriacao;
+	public void setIeSexo(String ieSexo) {
+		this.ieSexo = ieSexo;
 	}
 
-	public Date getDtAtualizacao() {
-		return dtAtualizacao;
+	public String getDsCidadeNatal() {
+		return dsCidadeNatal;
 	}
 
-	public void setDtAtualizacao(Date dtAtualizacao) {
-		this.dtAtualizacao = dtAtualizacao;
+	public void setDsCidadeNatal(String dsCidadeNatal) {
+		this.dsCidadeNatal = dsCidadeNatal;
 	}
 
-	public int getIdUsuario() {
+	public String getDsCidadeAtual() {
+		return dsCidadeAtual;
+	}
+
+	public void setDsCidadeAtual(String dsCidadeAtual) {
+		this.dsCidadeAtual = dsCidadeAtual;
+	}
+
+	public String getDsEndereco() {
+		return dsEndereco;
+	}
+
+	public void setDsEndereco(String dsEndereco) {
+		this.dsEndereco = dsEndereco;
+	}
+
+	public int getNrTelefone() {
+		return nrTelefone;
+	}
+
+	public void setNrTelefone(int nrTelefone) {
+		this.nrTelefone = nrTelefone;
+	}
+
+	public Long getIdUsuario() {
 		return idUsuario;
 	}
 
+	
+	
 }

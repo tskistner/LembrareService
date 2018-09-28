@@ -1,6 +1,7 @@
 package com.furb.lembrare.tables.user;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,10 @@ public class UsuarioService {
 		ArrayList<Usuario> res = new ArrayList<Usuario>();
 		ur.findAll().forEach(res :: add);
 		return res;
+	}
+	
+	public Optional<Usuario> findById(Long id) {
+		return ur.findById(id);
 	}
 
 }
