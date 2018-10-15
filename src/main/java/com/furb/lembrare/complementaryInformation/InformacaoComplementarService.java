@@ -24,9 +24,9 @@ public class InformacaoComplementarService {
 		icr.save(u);
 	}
 	
-	public ArrayList<InformacaoComplementar> getAll() {
+	public ArrayList<InformacaoComplementar> getAll(Long idUsuario) {
 		ArrayList<InformacaoComplementar> res = new ArrayList<InformacaoComplementar>();
-		icr.findAll().forEach(res :: add);
+		icr.findByIdUsuario(idUsuario).forEach(res :: add);
 		return res;
 	}
 	

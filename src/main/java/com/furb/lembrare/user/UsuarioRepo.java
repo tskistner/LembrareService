@@ -1,4 +1,4 @@
-package com.furb.lembrare.tables.user;
+package com.furb.lembrare.user;
 
 import org.springframework.data.repository.CrudRepository;
 

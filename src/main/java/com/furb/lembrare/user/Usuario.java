@@ -1,18 +1,20 @@
-package com.furb.lembrare.tables.user;
+package com.furb.lembrare.user;
 
 import java.sql.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "usuario")
+@org.hibernate.annotations.DynamicUpdate
 public class Usuario {
 
 	@Id
 	@GeneratedValue
 	private Long idUsuario;
 	private Date dtAtualizacao;
-	private String dsEmail;
 	private String dsSenha;
 	private String nmPessoa;
 	private String dsCpf;
@@ -21,14 +23,14 @@ public class Usuario {
 	private String dsCidadeNatal;
 	private String dsCidadeAtual;
 	private String dsEndereco;
-	private int nrTelefone;
+	private Long nrTelefone;
+	private String ieUsarSenha;
 
-	public Usuario(String dsEmail, String nmPessoa, String dsCpf, Date dtNascimento,
+	public Usuario(String nmPessoa, String dsCpf, Date dtNascimento,
 			String ieSexo, String dsCidadeNatal, String dsCidadeAtual,
-			String dsEndereco, int nrTelefone) {
+			String dsEndereco, Long nrTelefone) {
 		super();
 		this.dtAtualizacao = new Date(System.currentTimeMillis());
-		this.dsEmail = dsEmail;
 		this.nmPessoa = nmPessoa;
 		this.dsCpf = dsCpf;
 		this.dtNascimento = dtNascimento;
@@ -42,6 +44,17 @@ public class Usuario {
 	public Usuario() {
 		super();
 	}
+	
+	public void copyAll(Usuario other) {
+		setNmPessoa(other.getNmPessoa());
+		setDsCpf(other.getDsCpf());
+		setDtNascimento(other.getDtNascimento());
+		setIeSexo(other.getIeSexo());
+		setDsCidadeNatal(other.getDsCidadeNatal());
+		setDsCidadeAtual(other.getDsCidadeAtual());
+		setDsEndereco(other.getDsEndereco());
+		setNrTelefone(other.getNrTelefone());
+	}
 
 	public Date getDtAtualizacao() {
 		return dtAtualizacao;
@@ -49,14 +62,6 @@ public class Usuario {
 
 	public void setDtAtualizacao(Date dtAtualizacao) {
 		this.dtAtualizacao = dtAtualizacao;
-	}
-
-	public String getDsEmail() {
-		return dsEmail;
-	}
-
-	public void setDsEmail(String dsEmail) {
-		this.dsEmail = dsEmail;
 	}
 
 	public String getDsSenha() {
@@ -123,11 +128,11 @@ public class Usuario {
 		this.dsEndereco = dsEndereco;
 	}
 
-	public int getNrTelefone() {
+	public Long getNrTelefone() {
 		return nrTelefone;
 	}
 
-	public void setNrTelefone(int nrTelefone) {
+	public void setNrTelefone(Long nrTelefone) {
 		this.nrTelefone = nrTelefone;
 	}
 
@@ -135,6 +140,13 @@ public class Usuario {
 		return idUsuario;
 	}
 
+	public void setIeUsarSenha(String ieUsarSenha) {
+		this.ieUsarSenha = ieUsarSenha;
+	}
+	
+	public String getIeUsarSenha() {
+		return ieUsarSenha;
+	}
 	
 	
 }

@@ -1,13 +1,18 @@
 package com.furb.lembrare.complementaryInformation;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
+
+import com.furb.lembrare.TableInterface;
 
 @Entity
-public class InformacaoComplementar {
+@Table(name = "informacao_complementar")
+public class InformacaoComplementar implements TableInterface {
 
 	@Id
 	@GeneratedValue
@@ -63,6 +68,16 @@ public class InformacaoComplementar {
 
 	public Long getIdInfoCompl() {
 		return idInfoCompl;
+	}
+
+	@Override
+	public ArrayList<Object> getRegisters() {
+		ArrayList<Object> registers = new ArrayList<>();
+		registers.add(getLine("id", getIdInfoCompl(), false));
+		registers.add(getLine("ai_nm_pessoa", getNmPessoa(), true));
+		registers.add(getLine("ai_dt_nascimento", getDtNascimento(), true));
+		registers.add(getLine("ai_id_pessoa", getIdPessoa(), false));
+		return registers;
 	}
 
 }

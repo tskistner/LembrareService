@@ -1,4 +1,4 @@
-package com.furb.lembrare.tables.user;
+package com.furb.lembrare.user;
 
 import java.util.ArrayList;
 import java.util.Optional;

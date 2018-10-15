@@ -1,4 +1,4 @@
-package com.furb.lembrare.tables.user;
+package com.furb.lembrare.user;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -29,31 +29,32 @@ public class UsuarioController {
 
 	@CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping(method = RequestMethod.POST, value = "user/update")
-	public void update(@RequestBody HashMap params) {
+	public void update(@RequestBody Usuario u) {
+		Optional<Usuario> op = us.findById(u.getIdUsuario());
+		if (op.isPresent()) {
+			Usuario uActual = op.get();
+			uActual.copyAll(u);
+			uActual.setDtAtualizacao(new Date(System.currentTimeMillis()));
+			us.update(uActual);
+		}
+	}
+	
+	@CrossOrigin(origins = "http://localhost:3000")
+	@RequestMapping(method = RequestMethod.POST, value = "user/upwd")
+	public void updatePassword(@RequestBody HashMap<String, Object> params) {
 		if (params != null && !params.isEmpty()) {
-			Optional<Usuario> ret = us.findById(Long.parseLong(params.get("ID_USUARIO").toString()));
-			if (ret.isPresent()) {
-				Usuario u = ret.get();
-				u.setDsCidadeAtual(Utils.toString(params.get("DS_CIDADE_ATUAL")));
-				u.setDsCidadeNatal(Utils.toString(params.get("DS_CIDADE_NATAL")));
-				u.setDsEmail(Utils.toString(params.get("DS_EMAIL")));
-				u.setDsEndereco(Utils.toString(params.get("DS_ENDERECO")));
-				u.setDtAtualizacao(new Date(System.currentTimeMillis()));				
-				java.util.Date date = Utils.toDate(params.get("DT_NASCIMENTO"));
-				if (date != null) {
-					u.setDtNascimento(new java.sql.Date(date.getTime()));
-				}
-				u.setIeSexo(Utils.toString(params.get("IE_SEXO")));
-				u.setNmPessoa(Utils.toString(params.get("NM_PESSOA")));
-				u.setNrTelefone(Utils.toInt(params.get("NR_TELEFONE")));
-
+			Optional<Usuario> op = us.findById(Utils.toLong(params.get("idUsuario")));
+			if (op.isPresent()) {
+				Usuario u = op.get();
+				u.setDsSenha(Utils.toString(params.get("dsSenha")));
+				u.setIeUsarSenha(Utils.toString(params.get("ieUsarSenha")));
 				us.update(u);
 			}
 		}
 	}
 
 	@CrossOrigin(origins = "http://localhost:3000")
-	@RequestMapping("user/gbi/{id}")
+	@RequestMapping("user/uByID/{id}")
 	public Usuario getUserById(@PathVariable Long id) {
 		Optional<Usuario> ret = us.findById(id);
 		if (ret.isPresent()) {
