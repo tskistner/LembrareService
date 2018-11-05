@@ -1,23 +1,17 @@
 delimiter //
 
 drop procedure if exists atualizar_nivel_usuario; //
-create procedure atualizar_nivel_usuario(id_usuario_p int, 
-										 id_categoria_p int, 
-										 id_exercicio_p int, 
-										 ie_opcao_p text,
-										 id_pessoa_p int,
-										 ds_boletim_p text)
+create procedure atualizar_nivel_usuario(id_usuario_p integer, 
+										 id_categoria_p integer, 
+										 id_exercicio_p integer, 
+										 ie_opcao_p text)
 begin
 
-declare qt_nivel_atual_w int;
+declare qt_nivel_atual_w integer;
+declare qt_reg_w integer;
 
-delete from testes;
-insert into testes values ('categoria: '||id_categoria_p);
-commit;
-
-
-select qt_nivel
-into   qt_nivel_atual_w
+select count(1), ifnull(max(qt_nivel),0)
+into   qt_reg_w, qt_nivel_atual_w
 from   categoria_nivel
 where id_categoria = id_categoria_p
 and   id_usuario = id_usuario_p;
@@ -28,22 +22,20 @@ else
 	set qt_nivel_atual_w = qt_nivel_atual_w - 1;
 end if;
 
-update categoria_nivel 
-set  qt_nivel = qt_nivel_atual_w
-where id_categoria = id_categoria_p
-and   id_usuario = id_usuario_p;
+if (qt_reg_w = 0) then
+	insert into categoria_nivel values (id_categoria_p,id_usuario_p,qt_nivel_atual_w);
+else
+	update categoria_nivel 
+	set  qt_nivel = qt_nivel_atual_w
+	where id_categoria = id_categoria_p
+	and   id_usuario = id_usuario_p;
+end if;
 
 commit;
 
 insert into historico_level (id_usuario, dt_atualizacao, qt_nivel, id_exercicio, id_categoria)
-	values (id_usuario_p, current_date, qt_nivel_atual_w, id_exercicio_p, id_categoria_p);
+	values (id_usuario_p, CURRENT_TIMESTAMP, qt_nivel_atual_w, id_exercicio_p, id_categoria_p);
 	
 commit;
-
-if (ie_pessoa_boletim_p > 0) then
-	insert into boletim (id_categoria, ds_boletim, dt_atualizacao, id_pessoa, id_usuario)
-		values (id_categoria_p, ds_boletim_p, current_date, id_pessoa_p, id_usuario_p);
-	commit;
-end if;
 
 end; //

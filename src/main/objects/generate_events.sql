@@ -15,7 +15,8 @@ declare qt_dias_w int(10);
 	select count(*)
 	into   qt_opcao_w
 	from   informacao_complementar
-	where  id_usuario = id_usuario_p;
+	where  id_usuario = id_usuario_p
+	and    dt_nascimento is not null;
 	
 	if (qt_opcao_w > 0) then
 		select floor(rand() * 2) 
@@ -65,6 +66,7 @@ declare qt_dias_w int(10);
 		and    a.id_pessoa = b.id_expressao
 		and    a.id_usuario = c.id_usuario
 		and    b.id_grupo = 2
+		and    a.dt_nascimento is not null
 		order by rand() limit 1;	
 
 		set ds_exercicio_p = concat('Quando é o aniversario de seu/sua ',ds_resposta_p,' ',ds_exercicio_p,'?');

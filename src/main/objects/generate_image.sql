@@ -1,7 +1,7 @@
 delimiter //
 
 drop procedure if exists generate_image; //
-create procedure generate_image (out ds_exercicio_p text, out ds_resposta_p text, out ds_imagem_p blob, out ds_sound_p blob)
+create procedure generate_image (in id_exercicio_p integer, out ds_exercicio_p text, out ds_resposta_p text, out ds_imagem_p blob, out ds_sound_p blob)
 begin
 
 
@@ -10,6 +10,7 @@ begin
 	from   exercicio_imagem a, imagem b
 	where  a.id_imagem = b.id_imagem
 	and    a.id_exercicio = 5
+	and    (id_exercicio_p <> 4 or b.ds_som is not null)
 	order by rand() limit 1;
 	
 	/*Opção aleatória 1*/

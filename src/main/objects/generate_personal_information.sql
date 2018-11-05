@@ -16,16 +16,27 @@ declare ds_local_w varchar(255);
 declare ds_localizacao_w varchar(255);
 declare id_grupo_w int(11);
 declare ds_expressao_w varchar(255);
+declare id_expressao_w integer;
 
-	select floor(rand() * 6) + 1
+	set id_expressao_w = 0;
+
+	select floor(rand() * 7) + 1
 	into   qt_opcao_w
 	from   dual;
-	
+		
 	if (qt_opcao_w in (1,2,3,4,5)) then 
 		select nm_pessoa, ds_cidade_atual, ds_cidade_natal, ds_endereco, nr_telefone
 		into   nm_pessoa_w, ds_cidade_atual_w, ds_cidade_natal_w, ds_endereco_w, nr_telefone_w
 		from   usuario
 		where  id_usuario = id_usuario_p;
+	elseif (qt_opcao_w = 6) then
+		select b.ds_expressao, a.nm_pessoa, b.id_expressao
+		into   ds_expressao_w, nm_pessoa_w, id_expressao_w
+		from   informacao_complementar a, expressao b
+		where  a.id_pessoa = b.id_expressao
+		and    a.id_usuario = id_usuario_p
+		and    b.id_grupo = 2
+		order by rand() limit 1;
 	else
 		select ds_local, ds_localizacao
 		into   ds_local_w, ds_localizacao_w
@@ -60,6 +71,10 @@ declare ds_expressao_w varchar(255);
 		
 		select concat(ds_resposta_p,';;','33',floor(rand() * 1000000),';;33',floor(rand() * 1000000))
 		into   ds_resposta_p;
+	elseif (qt_opcao_w = 6) then
+		set ds_exercicio_p = concat('Quem é ',nm_pessoa_w);
+		set ds_resposta_p = ds_expressao_w;
+		set id_grupo_w = 2;
 	else
 		set ds_exercicio_p = concat('Que localização é essa: "',ds_localizacao_w,'"?');
 		set ds_resposta_p = ds_local_w;	
@@ -73,6 +88,7 @@ declare ds_expressao_w varchar(255);
 		into   ds_resposta_p
 		from   expressao
 		where  id_grupo = id_grupo_w
+		and    ((id_expressao_w = 0) or (id_expressao <> id_expressao_w))
 		order by rand() LIMIT 1;
 		
 		/*Opções aleatórias 2*/
@@ -80,6 +96,7 @@ declare ds_expressao_w varchar(255);
 		into   ds_resposta_p
 		from   expressao
 		where  id_grupo = id_grupo_w
+		and    ((id_expressao_w = 0) or (id_expressao <> id_expressao_w))
 		order by rand() LIMIT 1;
 	
 	end if;

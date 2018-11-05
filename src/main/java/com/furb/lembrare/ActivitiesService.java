@@ -12,6 +12,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,7 @@ public class ActivitiesService {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
+	@Transactional
 	@RequestMapping("/allCategories")
 	@GetMapping
 	public List<Map<String, Object>> getCategories() {
@@ -35,6 +37,7 @@ public class ActivitiesService {
 		return jdbcTemplate.queryForList(sql);
 	}
 
+	@Transactional
 	@RequestMapping("/getLevel")
 	@GetMapping
 	public Integer getLevel(Integer idUsuario, Integer idCategoria) {
@@ -44,6 +47,7 @@ public class ActivitiesService {
 		return jdbcTemplate.queryForObject(sql.toString(), Integer.class);
 	}
 
+	@Transactional
 	private Integer getRandomExercise(Integer idUsuario, Integer idCategoria, Integer idExercicio) {
 		StringBuilder sql = new StringBuilder("");
 		sql.append(" select id_exercicio ").append(" from categoria_exercicio ").append(" where id_categoria = ")
@@ -52,24 +56,25 @@ public class ActivitiesService {
 		return jdbcTemplate.queryForObject(sql.toString(), Integer.class);
 	}
 
+	@Transactional
 	@RequestMapping(method = RequestMethod.POST, value = "updateLevel")
 	@CrossOrigin(origins = "http://localhost:3000")
 	public void updateLevel(@RequestBody HashMap<String, Object> data) {
 		try {
 			Connection connection = jdbcTemplate.getDataSource().getConnection();
-			CallableStatement callableStatement = connection.prepareCall("{call atualizar_nivel_usuario(?, ?, ?, ?, ?, ?)}");
+			CallableStatement callableStatement = connection.prepareCall("{call atualizar_nivel_usuario(?, ?, ?, ?)}");
 			callableStatement.setInt(1, Utils.toInt(data.get("idUsuario")));
-			callableStatement.setInt(2, Utils.toInt(data.get("idExercicio")));
-			callableStatement.setInt(3, Utils.toInt(data.get("idCategoria")));
+			callableStatement.setInt(2, Utils.toInt(data.get("idCategoria")));
+			callableStatement.setInt(3, Utils.toInt(data.get("idExercicio")));
 			callableStatement.setString(4, Utils.toString(data.get("ieOpcao")));
-			callableStatement.setInt(5, Utils.toInt(data.get("idPessoa")));
-			callableStatement.setString(6, Utils.toString(data.get("dsBoletim")));
 			callableStatement.executeUpdate();
+			connection.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+	@Transactional
 	@RequestMapping(method = RequestMethod.POST, value = "getExercise")
 	public HashMap<String, Object> getExercice(@RequestBody HashMap<String, Object> data) {
 		try {
@@ -80,7 +85,7 @@ public class ActivitiesService {
 			HashMap<String, Object> ret = new HashMap<>(5);
 			ret.put("EXERCISE", idExercicio);
 			if (idExercicio == 4 || idExercicio == 5 || idExercicio == 6) {
-				ret.putAll(getImageSound());
+				ret.putAll(getImageSound(Utils.toInt(data.get("idExercicio"))));
 			} else if (idExercicio != 9 && idExercicio != 8) {
 				Connection connection = jdbcTemplate.getDataSource().getConnection();
 				CallableStatement callableStatement = connection.prepareCall("{call generate_exercise(?, ?, ?, ?)}");
@@ -91,6 +96,7 @@ public class ActivitiesService {
 				callableStatement.executeUpdate();
 				ret.put("DESCRIPTION", callableStatement.getString(3));
 				ret.put("ANSWER", callableStatement.getString(4));
+				connection.close();
 			}
 			return ret;
 		} catch (Exception e) {
@@ -99,20 +105,23 @@ public class ActivitiesService {
 		return null;
 	}
 
-	private HashMap<String, Object> getImageSound() {
+	@Transactional
+	private HashMap<String, Object> getImageSound(int idExercicio) {
 		try {
 			Connection connection = jdbcTemplate.getDataSource().getConnection();
-			CallableStatement callableStatement = connection.prepareCall("{call generate_image(?, ?, ?, ?)}");
-			callableStatement.registerOutParameter(1, Types.VARCHAR);
+			CallableStatement callableStatement = connection.prepareCall("{call generate_image(?, ?, ?, ?, ?)}");
+			callableStatement.setInt(1, idExercicio);
 			callableStatement.registerOutParameter(2, Types.VARCHAR);
-			callableStatement.registerOutParameter(3, Types.BLOB);
+			callableStatement.registerOutParameter(3, Types.VARCHAR);
 			callableStatement.registerOutParameter(4, Types.BLOB);
+			callableStatement.registerOutParameter(5, Types.BLOB);
 			callableStatement.executeUpdate();
 			HashMap<String, Object> ret = new HashMap<>(4);
-			ret.put("DESCRIPTION", callableStatement.getString(1));
-			ret.put("ANSWER", callableStatement.getString(2));
-			ret.put("B_IMAGEM", getImage(callableStatement.getBytes(3)));
-			ret.put("B_SOUND", getImage(callableStatement.getBytes(4)));
+			ret.put("DESCRIPTION", callableStatement.getString(2));
+			ret.put("ANSWER", callableStatement.getString(3));
+			ret.put("B_IMAGEM", getImage(callableStatement.getBytes(4)));
+			ret.put("B_SOUND", getImage(callableStatement.getBytes(5)));
+			connection.close();
 			return ret;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -120,6 +129,7 @@ public class ActivitiesService {
 		return null;
 	}
 
+	@Transactional
 	@RequestMapping("/imageExcercise/{idExercicio}")
 	@GetMapping
 	public Map<String, Object> getImageExcercise(@PathVariable Integer idExercicio) throws SQLException, IOException {
@@ -134,9 +144,12 @@ public class ActivitiesService {
 	}
 
 	private String getImage(byte[] image) {
-		String encodeImage = null;
-		encodeImage = Base64.getEncoder().withoutPadding().encodeToString(image);
-		return encodeImage;
+		if (image != null) {
+			String encodeImage = null;
+			encodeImage = Base64.getEncoder().withoutPadding().encodeToString(image);
+			return encodeImage;
+		}
+		return null;
 	}
 
 }
