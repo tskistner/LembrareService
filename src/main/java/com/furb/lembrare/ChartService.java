@@ -93,7 +93,7 @@ public class ChartService {
 	/*Queries*/
 	private List<Map<String,Object>> allReports(HashMap<String,String> data) {
 		StringBuilder sql = new StringBuilder("");
-		sql.append(" select dt_atualizacao, ds_boletim, ds_pessoa from boletim ")
+		sql.append(" select DATE_FORMAT(dt_atualizacao, '%d/%M/%Y') dt_atualizacao, ds_boletim, ds_pessoa from boletim ")
 		   .append(" where  id_usuario = ").append(Utils.getUsuarioAtual().getIdUsuario())
 		   .append(" and    dt_atualizacao between STR_TO_DATE('").append(Utils.toString(data.get("DT_INICIO"))).append("','%Y-%m-%d') ")
 		   .append(" and    STR_TO_DATE('").append(Utils.toString(data.get("DT_FIM"))).append("','%Y-%m-%d') ");
