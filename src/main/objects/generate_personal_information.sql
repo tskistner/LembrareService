@@ -17,12 +17,15 @@ declare ds_localizacao_w varchar(255);
 declare id_grupo_w int(11);
 declare ds_expressao_w varchar(255);
 declare id_expressao_w integer;
+declare id_expressao2_w integer;
 
 	set id_expressao_w = 0;
 
-	select floor(rand() * 7) + 1
+	select floor(rand() * 8) + 1
 	into   qt_opcao_w
 	from   dual;
+	
+	set qt_opcao_w = 6;
 		
 	if (qt_opcao_w in (1,2,3,4,5)) then 
 		select nm_pessoa, ds_cidade_atual, ds_cidade_natal, ds_endereco, nr_telefone
@@ -84,8 +87,8 @@ declare id_expressao_w integer;
 	if (id_grupo_w > 0) then
 	
 		/*Opções aleatórias 1*/
-		select concat(ds_resposta_p,';;',ds_expressao)
-		into   ds_resposta_p
+		select concat(ds_resposta_p,';;',ds_expressao), id_expressao
+		into   ds_resposta_p, id_expressao2_w
 		from   expressao
 		where  id_grupo = id_grupo_w
 		and    ((id_expressao_w = 0) or (id_expressao <> id_expressao_w))
@@ -97,6 +100,7 @@ declare id_expressao_w integer;
 		from   expressao
 		where  id_grupo = id_grupo_w
 		and    ((id_expressao_w = 0) or (id_expressao <> id_expressao_w))
+		and    id_expressao <> id_expressao2_w
 		order by rand() LIMIT 1;
 	
 	end if;

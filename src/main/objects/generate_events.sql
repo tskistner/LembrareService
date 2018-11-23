@@ -25,7 +25,7 @@ declare qt_dias_w int(10);
 	
 	if (qt_opcao_w = 0) then /*Buscar valores de eventos pré cadastrados*/
 		select STR_TO_DATE(concat(a.ds_valores,'/',year(current_Date)),'%d/%m/%Y'), 
-			   concat('Qual data marcante possui a seguinte descrição: "',a.ds_imagem,'" ?'), 
+			   concat('Segundo a descrição abaixo, de qual feriado se trata?: "',a.ds_imagem,'" ?'), 
 			   c.ds_expressao,
 			   c.id_expressao
 		into   dt_evento_w, ds_exercicio_p, ds_resposta_p, id_expressao_w
@@ -67,23 +67,23 @@ declare qt_dias_w int(10);
 		and    a.id_usuario = c.id_usuario
 		and    b.id_grupo = 2
 		and    a.dt_nascimento is not null
-		order by rand() limit 1;	
+		order by rand() limit 1;
 
 		set ds_exercicio_p = concat('Quando é o aniversario de seu/sua ',ds_resposta_p,' ',ds_exercicio_p,'?');
 		set ds_resposta_p = DATE_FORMAT(dt_evento_w,'%d/%m/%Y');
 			
-		/*Opção 1 aleatória : Dia/Mês/Ano*/
+		/*Opção 1 aleatória : Dia/Mês*/
 		select concat(ds_resposta_p,';;',floor(rand() * 31) + 1,'/',floor(rand() * 12) + 1,'/',year(current_Date))
 		into   ds_resposta_p;
 		
-		/*Opção 2 aleatória : Dia/Mês/Ano*/
+		/*Opção 2 aleatória : Dia/Mês*/
 		select concat(ds_resposta_p,';;',floor(rand() * 31) + 1,'/',floor(rand() * 12) + 1,'/',year(current_Date))
 		into   ds_resposta_p;
 		
 	end if;
 	
 	/*Parte 2 - Verificar quantos dias falta/passou do evento*/
-	set ds_exercicio_p = concat(ds_exercicio_p,';;','Quantos dias ');
+	/*set ds_exercicio_p = concat(ds_exercicio_p,';;','Quantos dias ');
 	if (dt_evento_w < current_Date) then
 		set ds_exercicio_p = concat(ds_exercicio_p,'passaram desde ',DATE_FORMAT(dt_evento_w,'%d/%m/%Y'),'?');
 		set ds_resposta_p = concat(ds_resposta_p,'//',datediff(CURRENT_DATE,dt_evento_w));
@@ -93,8 +93,8 @@ declare qt_dias_w int(10);
 	end if;
 	
 	/*Quantidade de dias aleatório*/
-	select concat(ds_resposta_p,';;',floor(rand() * 365),';;',floor(rand() * 365))
-	into ds_resposta_p;
+	/*select concat(ds_resposta_p,';;',floor(rand() * 365),';;',floor(rand() * 365))
+	into ds_resposta_p;*/
 	
    
 end; //

@@ -38,16 +38,6 @@ public class UsuarioController {
 		u.setDtAtualizacao(new Date(System.currentTimeMillis()));
 		u.setDtCriacao(new Date(System.currentTimeMillis()));
 		us.add(u);
-		/*try {
-			Connection connection = jdbcTemplate.getDataSource().getConnection();
-			CallableStatement callableStatement = connection.prepareCall("{call create_user (?) }");
-			callableStatement.setLong(1, u.getIdUsuario());
-			callableStatement.executeUpdate();
-			connection.close();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}*/
 
 	}
 
@@ -117,10 +107,11 @@ public class UsuarioController {
 				ret.put("DS_ERROR", "<p>Ocorreu um erro, tente novamente!</p>");
 				return ret;
 			}
-			int idUsuario = callableStatement.getInt(3);
+			Long idUsuario = callableStatement.getLong(3);
 			String nmUsuario = callableStatement.getString(4);
 			usuarioAtual.setIdUsuario(idUsuario);
 			usuarioAtual.setNmUsuario(nmUsuario);
+			Utils.setUsuarioAtual(usuarioAtual);
 			ret.put("ID_USER", idUsuario);
 			ret.put("NM_USER", nmUsuario);
 			ret.put("DS_ERROR", callableStatement.getString(5));
@@ -145,7 +136,7 @@ public class UsuarioController {
 	@CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping("user/logout")
 	public void logout() {
-		usuarioAtual.setIdUsuario(0);
+		usuarioAtual.setIdUsuario(0L);
 	}
 
 	@Transactional

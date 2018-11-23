@@ -82,6 +82,7 @@ public class ActivitiesService {
 			Integer idExercicio = getRandomExercise(idUsuario, Utils.toInt(data.get("idCategoria")),
 					Utils.toInt(data.get("idExercicio")));
 
+			//idExercicio = 7;
 			HashMap<String, Object> ret = new HashMap<>(5);
 			ret.put("EXERCISE", idExercicio);
 			if (idExercicio == 4 || idExercicio == 5 || idExercicio == 6) {

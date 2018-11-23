@@ -2,14 +2,14 @@ package com.furb.lembrare;
 
 public class UsuarioAtual {
 
-	private long idUsuario;
+	private Long idUsuario;
 	private String nmUsuario;
 
-	public long getIdUsuario() {
+	public Long getIdUsuario() {
 		return idUsuario;
 	}
 
-	public void setIdUsuario(long idUsuario) {
+	public void setIdUsuario(Long idUsuario) {
 		this.idUsuario = idUsuario;
 	}
 

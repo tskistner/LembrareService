@@ -7,8 +7,6 @@ create procedure generate_exercise (in id_usuario_p int,
 									out ds_resposta_p text)
 begin
 
-declare qt_iterator_w int(10);
-
 	/*Questões pessoais*/
 	if (id_exercicio_p = 1) then 
 		begin

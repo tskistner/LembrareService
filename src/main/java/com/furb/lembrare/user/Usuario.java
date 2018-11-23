@@ -25,7 +25,7 @@ public class Usuario {
 	private String dsCidadeNatal;
 	private String dsCidadeAtual;
 	private String dsEndereco;
-	private Long nrTelefone;
+	private String nrTelefone;
 	private String ieUsarSenha;
 	private String ieFase;
 	private String qtTempo;
@@ -35,7 +35,7 @@ public class Usuario {
 	
 	
 	public Usuario(Date dtAtualizacao, Date dtCriacao, String dsSenha, String nmPessoa, String dsCpf, Date dtNascimento, String ieSexo,
-			String dsCidadeNatal, String dsCidadeAtual, String dsEndereco, Long nrTelefone, String ieUsarSenha,
+			String dsCidadeNatal, String dsCidadeAtual, String dsEndereco, String nrTelefone, String ieUsarSenha,
 			String ieFase, String qtTempo, String dsMedicacao, String ieAntecedentes, String dsOutrasDoencas) {
 		super();
 		this.dtAtualizacao = new Date(System.currentTimeMillis());
@@ -58,7 +58,7 @@ public class Usuario {
 	}
 
 	public Usuario(Date dtAtualizacao, String dsSenha, String nmPessoa, String dsCpf, Date dtNascimento, String ieSexo,
-			String dsCidadeNatal, String dsCidadeAtual, String dsEndereco, Long nrTelefone, String ieUsarSenha) {
+			String dsCidadeNatal, String dsCidadeAtual, String dsEndereco, String nrTelefone, String ieUsarSenha) {
 		super();
 		this.dtAtualizacao = new Date(System.currentTimeMillis());
 		this.dsSenha = dsSenha;
@@ -219,11 +219,11 @@ public class Usuario {
 		this.dsEndereco = dsEndereco;
 	}
 
-	public Long getNrTelefone() {
+	public String getNrTelefone() {
 		return nrTelefone;
 	}
 
-	public void setNrTelefone(Long nrTelefone) {
+	public void setNrTelefone(String nrTelefone) {
 		this.nrTelefone = nrTelefone;
 	}
 
