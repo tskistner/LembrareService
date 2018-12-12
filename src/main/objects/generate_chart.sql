@@ -17,8 +17,10 @@ begin
 				  and    a.dt_atualizacao between dt_inicio_p and dt_fim_p) x 
 				left join historico_level a on x.dt = date(a.dt_atualizacao) and a.id_usuario = id_usuario_p and a.id_categoria = id_categoria_p
 			group by x.dt
-			order by x.dt desc;
+			order by x.dt;
 	declare continue HANDLER for not found set done = true;
+	
+	insert into testes values (CONCAT('cat: ',id_categoria_p));
 	
 	
 	select ifnull(max(qt_nivel),0) 
@@ -45,10 +47,10 @@ begin
 		
 		insert into w_Chart values (qt_atual_w, dt_atualizacao_w);
 		
+		commit;
+		
 	end loop;
 	close c01;
-	
-	commit;
 	
 
 end; //

@@ -86,7 +86,7 @@ public class ActivitiesService {
 			HashMap<String, Object> ret = new HashMap<>(5);
 			ret.put("EXERCISE", idExercicio);
 			if (idExercicio == 4 || idExercicio == 5 || idExercicio == 6) {
-				ret.putAll(getImageSound(Utils.toInt(data.get("idExercicio"))));
+				ret.putAll(getImageSound(idExercicio));
 			} else if (idExercicio != 9 && idExercicio != 8) {
 				Connection connection = jdbcTemplate.getDataSource().getConnection();
 				CallableStatement callableStatement = connection.prepareCall("{call generate_exercise(?, ?, ?, ?)}");

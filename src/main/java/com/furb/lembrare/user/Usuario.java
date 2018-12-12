@@ -136,11 +136,8 @@ public class Usuario {
 		setDsCidadeAtual(other.getDsCidadeAtual());
 		setDsEndereco(other.getDsEndereco());
 		setNrTelefone(other.getNrTelefone());
-		setIeFase(other.getIeFase());
-		setQtTempo(other.getQtTempo());
-		setDsMedicacao(other.getDsMedicacao());
-		setIeAntecedentes(other.getIeAntecedentes());
-		setDsOutrasDoencas(other.getDsOutrasDoencas());
+		setIeUsarSenha(other.getIeUsarSenha());
+		setDsSenha(other.getDsSenha());
 	}
 	
 	public void setDtCriacao(Date dtCriacao) {

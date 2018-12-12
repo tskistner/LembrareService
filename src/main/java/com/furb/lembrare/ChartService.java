@@ -68,9 +68,11 @@ public class ChartService {
 			callableStatement.setDate(3, Utils.toDate(data.get("DT_INICIO")));
 			callableStatement.setDate(4, Utils.toDate(data.get("DT_FIM")));
 			callableStatement.execute();
-			connection.close();
+			
+			jdbcTemplate.execute("commit");
 			
 			SqlRowSet srs = jdbcTemplate.queryForRowSet("select qt_value, date_format(dt_value, '%d/%b') dt_value from w_chart ");
+			connection.close();
 			ArrayList<String> l = new ArrayList<>();
 			ArrayList<Integer> values = new ArrayList<>();
 			while(srs.next()) {
