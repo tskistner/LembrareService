@@ -75,7 +75,7 @@ declare id_expressao2_w integer;
 		select concat(ds_resposta_p,';;','33',floor(rand() * 1000000),';;33',floor(rand() * 1000000))
 		into   ds_resposta_p;
 	elseif (qt_opcao_w = 6) then
-		set ds_exercicio_p = concat('Quem é ',nm_pessoa_w);
+		set ds_exercicio_p = concat('Quem é ',nm_pessoa_w,'?');
 		set ds_resposta_p = ds_expressao_w;
 		set id_grupo_w = 2;
 	else
